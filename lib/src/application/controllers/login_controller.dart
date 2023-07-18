@@ -12,15 +12,23 @@ class LoginController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   final IDataBaseRepository _dataBaseRepository =
       Get.find<IDataBaseRepository>();
+  final RxBool isLoading = false.obs;
+  final RxBool validLogin = false.obs;
 
   void signUp() {
     Get.to(() => const SignUp(), binding: SignUpBinding());
   }
 
+  void onChangedTextField() {
+    if (valid()) {
+      validLogin.value = true;
+    } else {
+      validLogin.value = false;
+    }
+  }
+
   Future<void> login() async {
     if (valid() == false) {
-      Get.snackbar('Erro:', 'Erro.toString()',
-          icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
       return;
     } else {
       dynamic user = await _dataBaseRepository.login(
@@ -36,6 +44,11 @@ class LoginController extends GetxController {
   }
 
   bool valid() {
+    if (emailController.text.length < 4 || passwordController.text.length < 5) {
+      return false;
+    } else if (emailController.text.isEmail == false) {
+      return false;
+    }
     return true;
   }
 }
