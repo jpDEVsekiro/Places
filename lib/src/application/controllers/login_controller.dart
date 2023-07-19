@@ -36,6 +36,8 @@ class LoginController extends GetxController {
       if (user is User) {
         Get.put(user, permanent: true);
         Get.offAll(() => const Home(), binding: HomeBinding());
+        emailController.text = '';
+        passwordController.text = '';
       } else {
         Get.snackbar('Erro:', user.toString(),
             icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
@@ -44,7 +46,7 @@ class LoginController extends GetxController {
   }
 
   bool valid() {
-    if (emailController.text.length < 4 || passwordController.text.length < 5) {
+    if (emailController.text.length < 4 || passwordController.text.length < 6) {
       return false;
     } else if (emailController.text.isEmail == false) {
       return false;

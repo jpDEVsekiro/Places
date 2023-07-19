@@ -76,4 +76,49 @@ class SqfliteRepository implements IDataBaseRepository {
     }
     return placesObj;
   }
+
+  @override
+  Future<bool> deletePlace(int id) async {
+    int deletRows =
+        await database.delete('Place', where: 'id = ?', whereArgs: [id]);
+    if (deletRows > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  Future editPlace(
+      int id,
+      String name,
+      String cep,
+      String street,
+      String complement,
+      String neighbornhood,
+      String state,
+      String city,
+      String number,
+      int userId) async {
+    int editedRows = await database.update(
+        'Place',
+        {
+          'name': name,
+          'cep': cep,
+          'street': street,
+          'complement': complement,
+          'neighbornhood': neighbornhood,
+          'state': state,
+          'city': city,
+          'number': number,
+          'userId': userId
+        },
+        where: 'id = ?',
+        whereArgs: [id]);
+    if (editedRows > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

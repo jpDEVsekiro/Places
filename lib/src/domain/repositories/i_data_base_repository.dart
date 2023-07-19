@@ -14,5 +14,17 @@ abstract class IDataBaseRepository {
       String city,
       String number,
       int userId);
+  Future<dynamic> editPlace(
+      int id,
+      String name,
+      String cep,
+      String street,
+      String complement,
+      String neighbornhood,
+      String state,
+      String city,
+      String number,
+      int userId);
   Future<List<Place>> getPlaces(int userId);
+  Future<bool> deletePlace(int id);
 }

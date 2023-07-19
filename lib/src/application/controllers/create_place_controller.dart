@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:my_places/src/domain/models/method.dart';
+import 'package:my_places/src/domain/models/place.dart';
 import 'package:my_places/src/domain/models/user.dart';
 import 'package:my_places/src/domain/providers/i_http.dart';
 import 'package:my_places/src/domain/repositories/i_data_base_repository.dart';
 
 class CreatePlaceController extends GetxController {
   TextEditingController nameController = TextEditingController();
-  TextEditingController cepController = TextEditingController();
+  TextEditingController zipCodeController = TextEditingController();
   TextEditingController streetController = TextEditingController();
   TextEditingController complementController = TextEditingController();
   TextEditingController neighborhoodController = TextEditingController();
@@ -19,22 +20,56 @@ class CreatePlaceController extends GetxController {
   final IDataBaseRepository _dataBaseRepository =
       Get.find<IDataBaseRepository>();
   RxBool isLoading = false.obs;
+  final RxBool validPlace = false.obs;
+  final RxString errorName = ''.obs;
+  final RxString errorZipCode = ''.obs;
+  final Place? place = Get.arguments;
+
+  @override
+  void onInit() {
+    if (place != null) {
+      nameController.text = place!.name;
+      zipCodeController.text = place!.cep;
+      streetController.text = place!.street;
+      complementController.text = place!.complement;
+      neighborhoodController.text = place!.neighbornhood;
+      stateController.text = place!.state;
+      cityController.text = place!.city;
+      numberController.text = place!.number;
+      valid();
+    }
+    super.onInit();
+  }
 
   void createPlace() {
     if (valid() == false) {
       return;
     }
     isLoading.value = true;
-    _dataBaseRepository.createPlace(
-        nameController.text,
-        cepController.text,
-        streetController.text,
-        complementController.text,
-        neighborhoodController.text,
-        stateController.text,
-        cityController.text,
-        numberController.text,
-        user.id);
+    if (place == null) {
+      _dataBaseRepository.createPlace(
+          nameController.text,
+          zipCodeController.text,
+          streetController.text,
+          complementController.text,
+          neighborhoodController.text,
+          stateController.text,
+          cityController.text,
+          numberController.text,
+          user.id);
+    } else {
+      _dataBaseRepository.editPlace(
+          place!.id,
+          nameController.text,
+          zipCodeController.text,
+          streetController.text,
+          complementController.text,
+          neighborhoodController.text,
+          stateController.text,
+          cityController.text,
+          numberController.text,
+          user.id);
+    }
     isLoading.value = false;
     Get.back();
   }
@@ -42,17 +77,54 @@ class CreatePlaceController extends GetxController {
   Future<void> onChangedCep(String cep) async {
     if (cep.length == 8) {
       dynamic response = await http.request(
-          url: '${cepController.text}/json/', method: Method.get);
+          url: '${zipCodeController.text}/json/', method: Method.get);
       if (response != false) {
+        errorZipCode.value = '';
         streetController.text = response['logradouro'];
         neighborhoodController.text = response['bairro'];
-        complementController.text = response['complemento'];
         stateController.text = response['uf'];
         cityController.text = response['localidade'];
+      } else {
+        errorZipCode.value = 'CEP inválido';
       }
+      valid();
       print(response);
     }
   }
 
-  valid() {}
+  bool valid() {
+    if (nameController.text.length < 2) {
+      validPlace.value = false;
+      return false;
+    } else if (zipCodeController.text.length != 8) {
+      validPlace.value = false;
+      return false;
+    } else if (streetController.text.isEmpty) {
+      validPlace.value = false;
+      return false;
+    } else if (errorName.isNotEmpty || errorZipCode.isNotEmpty) {
+      validPlace.value = false;
+      return false;
+    }
+    validPlace.value = true;
+    return true;
+  }
+
+  void validName(String name) {
+    if (name.length < 2) {
+      errorName.value = 'Nome muito curto';
+    } else {
+      errorName.value = '';
+    }
+    valid();
+  }
+
+  void validZipCode(String zipCode) {
+    if (zipCodeController.text.length != 8) {
+      errorZipCode.value = 'CEP incompléto';
+      valid();
+    } else {
+      onChangedCep(zipCode);
+    }
+  }
 }

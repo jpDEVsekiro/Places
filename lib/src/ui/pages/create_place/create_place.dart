@@ -10,86 +10,298 @@ class CreatePlace extends GetView<CreatePlaceController> {
   Widget build(BuildContext context) {
     return ScaffoldPlaces(
         body: SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          const Text('Place', style: TextStyle(fontSize: 20)),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller.nameController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Name'),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: Get.width * 0.05,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: Get.height * 0.07),
+              child: Obx(
+                () => TextField(
+                    onChanged: controller.validName,
+                    style: TextStyle(fontSize: Get.width * 0.05),
+                    controller: controller.nameController,
+                    cursorColor: const Color(0xFF465275),
+                    decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: Get.width * 0.02),
+                        hintText: 'Nome',
+                        prefixIcon:
+                            const Icon(Icons.home, color: Color(0xFF465275)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        errorText: controller.errorName.value.isEmpty
+                            ? null
+                            : controller.errorName.value,
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 0.8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: const BorderSide(
+                              color: Color(0xFF465275), width: 0.8),
+                        ))),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: controller.onChangedCep,
-              controller: controller.cepController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'cep'),
+            Padding(
+              padding: EdgeInsets.only(top: Get.height * 0.04),
+              child: Obx(
+                () => TextField(
+                    onChanged: controller.validZipCode,
+                    style: TextStyle(fontSize: Get.width * 0.05),
+                    controller: controller.zipCodeController,
+                    cursorColor: const Color(0xFF465275),
+                    decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: Get.width * 0.02),
+                        hintText: 'CEP',
+                        prefixIcon: const Icon(Icons.add_location_alt,
+                            color: Color(0xFF465275)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        errorText: controller.errorZipCode.value.isEmpty
+                            ? null
+                            : controller.errorZipCode.value,
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide:
+                              const BorderSide(color: Colors.red, width: 0.8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: const BorderSide(
+                              color: Color(0xFF465275), width: 0.8),
+                        ))),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller.streetController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'rua'),
+            Padding(
+              padding: EdgeInsets.only(top: Get.height * 0.04),
+              child: TextField(
+                onChanged: (text) => controller.valid(),
+                style: TextStyle(fontSize: Get.width * 0.05),
+                controller: controller.streetController,
+                cursorColor: const Color(0xFF465275),
+                decoration: InputDecoration(
+                    enabled: false,
+                    hintText: 'Rua',
+                    alignLabelWithHint: true,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: Get.width * 0.02),
+                    prefixIcon: const Icon(Icons.add_road_rounded,
+                        color: Color(0xFF465275)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide:
+                          const BorderSide(color: Colors.red, width: 0.8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(
+                          color: Color(0xFF465275), width: 0.8),
+                    )),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller.complementController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Complemento'),
+            Padding(
+              padding: EdgeInsets.only(top: Get.height * 0.04),
+              child: TextField(
+                  onChanged: (text) => controller.valid(),
+                  style: TextStyle(fontSize: Get.width * 0.05),
+                  controller: controller.complementController,
+                  cursorColor: const Color(0xFF465275),
+                  decoration: InputDecoration(
+                      hintText: 'Complemento',
+                      alignLabelWithHint: true,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: Get.width * 0.02),
+                      prefixIcon: const Icon(Icons.add_road_rounded,
+                          color: Color(0xFF465275)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 0.8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF465275), width: 0.8),
+                      ))),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller.neighborhoodController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Bairro'),
+            Padding(
+              padding: EdgeInsets.only(top: Get.height * 0.04),
+              child: TextField(
+                  onChanged: (text) => controller.valid(),
+                  style: TextStyle(fontSize: Get.width * 0.05),
+                  controller: controller.neighborhoodController,
+                  cursorColor: const Color(0xFF465275),
+                  decoration: InputDecoration(
+                      hintText: 'Bairro',
+                      enabled: false,
+                      alignLabelWithHint: true,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: Get.width * 0.02),
+                      prefixIcon: const Icon(Icons.add_road_rounded,
+                          color: Color(0xFF465275)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 0.8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF465275), width: 0.8),
+                      ))),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller.stateController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'estado'),
+            Padding(
+              padding: EdgeInsets.only(top: Get.height * 0.04),
+              child: TextField(
+                  onChanged: (text) => controller.valid(),
+                  style: TextStyle(fontSize: Get.width * 0.05),
+                  controller: controller.stateController,
+                  cursorColor: const Color(0xFF465275),
+                  decoration: InputDecoration(
+                      hintText: 'Estado',
+                      enabled: false,
+                      alignLabelWithHint: true,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: Get.width * 0.02),
+                      prefixIcon: const Icon(Icons.add_road_rounded,
+                          color: Color(0xFF465275)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 0.8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF465275), width: 0.8),
+                      ))),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller.cityController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'cidade'),
+            Padding(
+              padding: EdgeInsets.only(top: Get.height * 0.04),
+              child: TextField(
+                  onChanged: (text) => controller.valid(),
+                  style: TextStyle(fontSize: Get.width * 0.05),
+                  controller: controller.cityController,
+                  cursorColor: const Color(0xFF465275),
+                  decoration: InputDecoration(
+                      hintText: 'Cidade',
+                      enabled: false,
+                      alignLabelWithHint: true,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: Get.width * 0.02),
+                      prefixIcon: const Icon(Icons.add_road_rounded,
+                          color: Color(0xFF465275)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 0.8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF465275), width: 0.8),
+                      ))),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller.numberController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'numero'),
+            Padding(
+              padding: EdgeInsets.only(top: Get.height * 0.04),
+              child: TextField(
+                  onChanged: (text) => controller.valid(),
+                  style: TextStyle(fontSize: Get.width * 0.05),
+                  controller: controller.numberController,
+                  cursorColor: const Color(0xFF465275),
+                  decoration: InputDecoration(
+                      hintText: 'Numero',
+                      alignLabelWithHint: true,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: Get.width * 0.02),
+                      prefixIcon: const Icon(Icons.add_road_rounded,
+                          color: Color(0xFF465275)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 0.8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF465275), width: 0.8),
+                      ))),
             ),
-          ),
-          const SizedBox(height: 20),
-          Obx(() => controller.isLoading.value == true
-              ? const CircularProgressIndicator()
-              : ElevatedButton(
-                  onPressed: () {
-                    controller.createPlace();
-                  },
-                  child: const Text('Create Place'))),
-          const SizedBox(height: 20),
-        ],
+            Padding(
+                padding: EdgeInsets.only(
+                    top: Get.height * 0.09, bottom: Get.height * 0.015),
+                child: Obx(() => controller.isLoading.value
+                    ? const CircularProgressIndicator(color: Color(0xFF465275))
+                    : InkWell(
+                        onTap: () => controller.createPlace(),
+                        child: Obx(
+                          () => controller.validPlace.value
+                              ? Container(
+                                  width: Get.width * 0.5,
+                                  height: Get.height * 0.06,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    color: const Color(0xFF465275),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      controller.place != null
+                                          ? 'Editar Lugar'
+                                          : 'Criar Lugar',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  width: Get.width * 0.5,
+                                  height: Get.height * 0.06,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    color: Colors.grey,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      controller.place != null
+                                          ? 'Editar Lugar'
+                                          : 'Criar Lugar',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                        )))),
+          ],
+        ),
       ),
     ));
   }
