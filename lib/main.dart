@@ -9,6 +9,13 @@ import 'src/domain/repositories/i_data_base_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Color(0xFF601534),
+      statusBarBrightness: Brightness.light));
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   Get.lazyPut<IDataBaseRepository>(() => SqfliteRepository());
   await Get.find<IDataBaseRepository>().init();

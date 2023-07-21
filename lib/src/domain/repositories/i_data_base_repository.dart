@@ -27,4 +27,6 @@ abstract class IDataBaseRepository {
       int userId);
   Future<List<Place>> getPlaces(int userId);
   Future<bool> deletePlace(int id);
+
+  Future<dynamic> changePassword(String password, int id);
 }

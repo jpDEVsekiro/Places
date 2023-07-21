@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_places/src/application/controllers/sign_up_controller.dart';
+import 'package:my_places/src/application/controllers/change_password_controller.dart';
 import 'package:my_places/src/ui/widgets/scaffold_places.dart';
 
-class SignUp extends GetView<SignUpController> {
-  const SignUp({super.key});
+class ChangePassword extends GetView<ChangePasswordController> {
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,72 +39,31 @@ class SignUp extends GetView<SignUpController> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Obx(
-                            () => TextFormField(
-                                onFieldSubmitted: (value) =>
-                                    controller.onSubmittedName(),
-                                onChanged: controller.validName,
-                                style: TextStyle(fontSize: Get.width * 0.05),
-                                controller: controller.nameController,
-                                cursorColor: const Color(0xFF601534),
-                                decoration: InputDecoration(
-                                    alignLabelWithHint: true,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: Get.width * 0.02),
-                                    hintText: 'Nome',
-                                    prefixIcon: const Icon(Icons.person,
-                                        color: Color(0xFF601534)),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    errorText:
-                                        controller.errorName.value.isEmpty
-                                            ? null
-                                            : controller.errorName.value,
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: const BorderSide(
-                                          color: Color(0xFFE9557F), width: 0.8),
-                                    ),
-                                    errorStyle: const TextStyle(
-                                        color: Color(0xFFE9557F)),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: const BorderSide(
-                                          color: Color(0xFFE9557F), width: 0.8),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: const BorderSide(
-                                          color: Color(0xFF601534), width: 0.8),
-                                    ))),
-                          ),
                           Padding(
                             padding: EdgeInsets.only(top: Get.height * 0.04),
                             child: Obx(
-                              () => TextFormField(
-                                  onFieldSubmitted: (value) =>
-                                      controller.onSubmittedEmail(),
-                                  focusNode: controller.focusEmail,
-                                  onChanged: controller.validEmail,
+                              () => TextField(
+                                  onChanged: controller.validOldPassword,
                                   style: TextStyle(fontSize: Get.width * 0.05),
-                                  controller: controller.emailController,
+                                  obscureText: true,
+                                  controller: controller.oldPasswordController,
                                   cursorColor: const Color(0xFF601534),
                                   decoration: InputDecoration(
                                       alignLabelWithHint: true,
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: Get.width * 0.02),
-                                      hintText: 'E-mail',
-                                      prefixIcon: const Icon(Icons.email,
+                                      hintText: 'Senha Antiga',
+                                      prefixIcon: const Icon(Icons.lock,
                                           color: Color(0xFF601534)),
+                                      focusColor: const Color(0xFF601534),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(15.0),
                                       ),
-                                      errorText:
-                                          controller.errorEmail.value.isEmpty
-                                              ? null
-                                              : controller.errorEmail.value,
+                                      errorText: controller
+                                              .errorOldPassword.value.isEmpty
+                                          ? null
+                                          : controller.errorOldPassword.value,
                                       errorBorder: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(15.0),
@@ -133,10 +92,7 @@ class SignUp extends GetView<SignUpController> {
                           Padding(
                             padding: EdgeInsets.only(top: Get.height * 0.04),
                             child: Obx(
-                              () => TextFormField(
-                                  onFieldSubmitted: (value) =>
-                                      controller.onSubmittedPassword(),
-                                  focusNode: controller.focusPassword,
+                              () => TextField(
                                   onChanged: controller.validPassword,
                                   style: TextStyle(fontSize: Get.width * 0.05),
                                   obscureText: true,
@@ -154,6 +110,7 @@ class SignUp extends GetView<SignUpController> {
                                         borderRadius:
                                             BorderRadius.circular(15.0),
                                       ),
+                                      enabled: controller.validOldPasswod.value,
                                       errorText:
                                           controller.errorPassword.value.isEmpty
                                               ? null
@@ -186,10 +143,7 @@ class SignUp extends GetView<SignUpController> {
                           Padding(
                             padding: EdgeInsets.only(top: Get.height * 0.04),
                             child: Obx(
-                              () => TextFormField(
-                                  onFieldSubmitted: (value) =>
-                                      controller.onSubmittedConfirmPassword(),
-                                  focusNode: controller.focusConfirmPassword,
+                              () => TextField(
                                   onChanged: controller.validConfirmPassword,
                                   style: TextStyle(fontSize: Get.width * 0.05),
                                   obscureText: true,
@@ -198,9 +152,10 @@ class SignUp extends GetView<SignUpController> {
                                   cursorColor: const Color(0xFF601534),
                                   decoration: InputDecoration(
                                       alignLabelWithHint: true,
+                                      enabled: controller.validOldPasswod.value,
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: Get.width * 0.02),
-                                      hintText: 'Confirmar senha',
+                                      hintText: 'Comfirmar senha',
                                       prefixIcon: const Icon(Icons.lock,
                                           color: Color(0xFF601534)),
                                       focusColor: const Color(0xFF601534),
@@ -247,7 +202,7 @@ class SignUp extends GetView<SignUpController> {
                                   ? const CircularProgressIndicator(
                                       color: Color(0xFF601534))
                                   : InkWell(
-                                      onTap: () => controller.signUp(),
+                                      onTap: controller.changePassword,
                                       child: Obx(
                                         () => controller.validUser.value
                                             ? Container(
@@ -262,7 +217,7 @@ class SignUp extends GetView<SignUpController> {
                                                 ),
                                                 child: const Center(
                                                   child: Text(
-                                                    'Criar Conta',
+                                                    'Mudar Senha',
                                                     style: TextStyle(
                                                         color: Colors.white),
                                                   ),
@@ -279,7 +234,7 @@ class SignUp extends GetView<SignUpController> {
                                                 ),
                                                 child: const Center(
                                                   child: Text(
-                                                    'Criar Conta',
+                                                    'Mudar Senha',
                                                     style: TextStyle(
                                                         color: Colors.white),
                                                   ),

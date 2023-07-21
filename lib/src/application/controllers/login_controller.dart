@@ -14,6 +14,7 @@ class LoginController extends GetxController {
       Get.find<IDataBaseRepository>();
   final RxBool isLoading = false.obs;
   final RxBool validLogin = false.obs;
+  final FocusNode focusPassword = FocusNode();
 
   void signUp() {
     Get.to(() => const SignUp(), binding: SignUpBinding());
@@ -31,6 +32,7 @@ class LoginController extends GetxController {
     if (valid() == false) {
       return;
     } else {
+      isLoading.value = true;
       dynamic user = await _dataBaseRepository.login(
           emailController.text, passwordController.text);
       if (user is User) {
@@ -39,9 +41,10 @@ class LoginController extends GetxController {
         emailController.text = '';
         passwordController.text = '';
       } else {
-        Get.snackbar('Erro:', user.toString(),
+        Get.snackbar('Erro', user.toString(),
             icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
       }
+      isLoading.value = false;
     }
   }
 
@@ -52,5 +55,13 @@ class LoginController extends GetxController {
       return false;
     }
     return true;
+  }
+
+  void onSubmittedLogin() {
+    focusPassword.requestFocus();
+  }
+
+  void onSubmittedPassword() {
+    login();
   }
 }

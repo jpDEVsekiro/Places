@@ -20,7 +20,13 @@ class SqfliteRepository implements IDataBaseRepository {
   }
 
   @override
-  Future<User> createAccount(String name, String email, String password) async {
+  Future<dynamic> createAccount(
+      String name, String email, String password) async {
+    List<Map<String, Object?>> user =
+        await database.query('User', where: 'email = ?', whereArgs: [email]);
+    if (user.isNotEmpty) {
+      return 'Usuário já cadastrado';
+    }
     int id = await database
         .insert('User', {'name': name, 'email': email, 'password': password});
     return User(id: id, name: name, email: email, password: password);
@@ -115,6 +121,23 @@ class SqfliteRepository implements IDataBaseRepository {
         },
         where: 'id = ?',
         whereArgs: [id]);
+    if (editedRows > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> changePassword(String password, int id) async {
+    int editedRows = await database.update(
+        'User',
+        {
+          'password': password,
+        },
+        where: 'id = ?',
+        whereArgs: [id]);
+
     if (editedRows > 0) {
       return true;
     } else {

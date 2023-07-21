@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 
 class ScaffoldPlaces extends StatelessWidget {
   const ScaffoldPlaces(
-      {Key? key, required this.body, this.floatingActionButton, this.appBar})
+      {Key? key,
+      required this.body,
+      this.floatingActionButton,
+      this.appBar,
+      this.backgroundColor})
       : super(key: key);
   final Widget body;
   final Widget? floatingActionButton;
   final PreferredSizeWidget? appBar;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +22,7 @@ class ScaffoldPlaces extends StatelessWidget {
         },
         child: SafeArea(
             child: Scaffold(
+          backgroundColor: backgroundColor,
           appBar: appBar,
           floatingActionButton: floatingActionButton,
           body: body,

@@ -19,20 +19,25 @@ class SignUpController extends GetxController {
   final RxString errorEmail = ''.obs;
   final RxString errorPassword = ''.obs;
   final RxString errorConfirmPassword = ''.obs;
+  final FocusNode focusEmail = FocusNode();
+  final FocusNode focusPassword = FocusNode();
+  final FocusNode focusConfirmPassword = FocusNode();
 
   Future<void> signUp() async {
     if (valid() == false) {
       return;
     } else {
+      isLoading.value = true;
       dynamic user = await _dataBaseRepository.createAccount(
           nameController.text, emailController.text, passwordController.text);
       if (user is User) {
         Get.put(user, permanent: true);
         Get.offAll(() => const Home(), binding: HomeBinding());
       } else {
-        Get.snackbar('Erro:', user.toString(),
+        Get.snackbar('Erro', user.toString(),
             icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
       }
+      isLoading.value = false;
     }
   }
 
@@ -89,5 +94,21 @@ class SignUpController extends GetxController {
       errorConfirmPassword.value = '';
     }
     valid();
+  }
+
+  void onSubmittedName() {
+    focusEmail.requestFocus();
+  }
+
+  void onSubmittedEmail() {
+    focusPassword.requestFocus();
+  }
+
+  void onSubmittedPassword() {
+    focusConfirmPassword.requestFocus();
+  }
+
+  void onSubmittedConfirmPassword() {
+    signUp();
   }
 }
