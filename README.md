@@ -30,7 +30,7 @@ Segue link para download do APK.
 
 https://drive.google.com/file/d/1e8b3hrWxCMZ113VMpKucdZH8lcV5dFvt/view?usp=drive_link
 
-# Como Rodar Projeto
+# Como Rodar o Projeto
 
 É necessário ter Flutter, Dart e Android Studio instalado e configurado corretamente. 
 
